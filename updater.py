@@ -52,14 +52,6 @@ class MiApi(object):
         self.get_api_key()
         self.get_token()
 
-    # @property
-    # def headers(self) -> dict:
-    #     return {
-    #         "Content-Type": "application/json",
-    #         "Accept": "application/json, text/plain, */*",
-    #         "api_key": self.api_key
-    #     }
-
     def my_request(self, path: str, method: str, params: dict = None, json: dict = None, data: dict = None,
                    text: bool = False) -> typing.Union[dict, str, None]:
         set_method = {
@@ -69,15 +61,15 @@ class MiApi(object):
         }
 
         url = self.url + path
-        request = set_method[method](url, headers=self.headers, params=params, json=json, data=data, verify=False)
+        _request = set_method[method](url, headers=self.headers, params=params, json=json, data=data, verify=False)
 
-        if request.status_code == 200:
+        if _request.status_code == 200:
             logging.debug('Got response!')
-            return request.text if text else request.json()
+            return _request.text if text else _request.json()
         else:
-            logging.debug(f'Got response code {request.status_code}')
-            print(f'Что-то пошло не так. Код ошибки {request.status_code}')
-            print(f'{request.text}')
+            logging.debug(f'Got response code {_request.status_code}')
+            print(f'Что-то пошло не так. Код ошибки {_request.status_code}')
+            print(f'{_request.text}')
 
     def get_api_key(self) -> None:
         logging.debug("Authentication swagger")
